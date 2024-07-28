@@ -32,28 +32,33 @@ if (!fs.existsSync('uploads')) {
 
 // Upload endpoint
 app.post('/upload', upload.single('file'), async (req, res) => {
-  if (!req.file) {
-    return res.status(400).send('No file uploaded.');
-  }
-
-  const blobName = req.file.originalname;
-  const blockBlobClient = containerClient.getBlockBlobClient(blobName);
-
   try {
-    // Upload file to Azure Blob Storage
-    await blockBlobClient.uploadFile(req.file.path);
+    const file = req.file;
+    if (!file) {
+      return res.status(400).send('No file uploaded.');
+    }
 
-    // Remove the file from local storage after upload
-    fs.unlinkSync(req.file.path);
+    // Create a container client
+    const containerName = 'your-container-name';
+    const containerClient = blobServiceClient.getContainerClient(containerName);
+
+    // Create a blob client
+    const blobName = file.originalname;
+    const blockBlobClient = containerClient.getBlockBlobClient(blobName);
+
+    // Upload the file to the blob
+    await blockBlobClient.uploadFile(file.path);
+
+    // Optionally, delete the file from the server after uploading to blob storage
+    // fs.unlinkSync(file.path);
 
     res.status(200).send('File uploaded successfully.');
   } catch (error) {
-    console.error('Error uploading file:', error);
+    console.error('Error uploading file:', error.message);
     res.status(500).send('Error uploading file.');
   }
 });
 
-// Start the server
 app.listen(port, () => {
   console.log(`Server running on port ${port}`);
 });
