@@ -1,0 +1,11 @@
+/syncshare.github.io
+  /index.html
+  /project.css
+  /history.html
+  /dashboard.html
+  /about.html
+  /login.html
+  /script.js
+  /structure.txt
+  /syncshare.jpg
+  /CNAME
