@@ -25,13 +25,14 @@
             <h2>Welcome to SyncShare</h2>
             <p>Share and manage your files easily and securely.</p>
         </section>
-        <h1>Upload a File</h1>
-        <form id="uploadForm" enctype="multipart/form-data">
-            <input type="file" id="fileInput" name="file" />
-            <button type="submit">Upload</button>
-          </form>          
-          <div id="uploadStatus"></div>
-        <p id="upload"></p>
+        <section id="upload">
+            <h1>Upload a File</h1>
+            <form id="uploadForm" enctype="multipart/form-data" method="post" action="/upload">
+                <input type="file" id="fileInput" name="file" />
+                <button type="submit">Upload</button>
+            </form>          
+            <div id="uploadStatus"></div>
+        </section>
     </main>
     <footer>
         <p>&copy; 2024 SyncShare. All rights reserved.</p>
