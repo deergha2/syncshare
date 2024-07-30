@@ -12,7 +12,7 @@ document.addEventListener('DOMContentLoaded', function() {
       formData.append('file', file);
 
       try {
-          const response = await fetch('https://api.syncshare.shop/upload', {
+          const response = await fetch('https://syncshare.shop/upload', {
               method: 'POST',
               body: formData,
           });
