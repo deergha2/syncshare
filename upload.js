@@ -22,7 +22,7 @@ const upload = multer({ storage: storage });
 // Azure Blob Storage configuration
 const connectionString = process.env.AZURE_STORAGE_CONNECTION_STRING;
 const blobServiceClient = BlobServiceClient.fromConnectionString(connectionString);
-const containerName = 'syncshare'; // Replace with your container name
+const containerName = 'syncshare'; // Replace with your actual container name
 const containerClient = blobServiceClient.getContainerClient(containerName);
 
 // Ensure 'uploads' directory exists
@@ -38,19 +38,11 @@ app.post('/upload', upload.single('file'), async (req, res) => {
       return res.status(400).send('No file uploaded.');
     }
 
-    // Create a container client
-    const containerName = 'your-container-name';
-    const containerClient = blobServiceClient.getContainerClient(containerName);
-
-    // Create a blob client
-    const blobName = file.originalname;
+    const blobName = path.basename(file.path);
     const blockBlobClient = containerClient.getBlockBlobClient(blobName);
 
-    // Upload the file to the blob
     await blockBlobClient.uploadFile(file.path);
-
-    // Optionally, delete the file from the server after uploading to blob storage
-    // fs.unlinkSync(file.path);
+    fs.unlinkSync(file.path); // Optional: remove the file after upload
 
     res.status(200).send('File uploaded successfully.');
   } catch (error) {
